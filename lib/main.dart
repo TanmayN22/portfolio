@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:porfolio/app/modules/home/home_view.dart';
+import 'package:porfolio/app/modules/home/widgets/wallpaper.dart';
 import 'app/controllers/theme_controller.dart';
 // import 'app/theme/app_theme.dart';
 
@@ -20,7 +21,7 @@ class MyPortfolioApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: "Tanmay's Portfolio",
         theme: themeController.theme,
-        home: const HomeScreen(),
+        home: const Wallpaper(),
       ),
     );
   }
