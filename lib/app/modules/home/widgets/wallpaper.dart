@@ -9,7 +9,7 @@ class Wallpaper extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ThemeController themeController = Get.find();
-    
+
     return Scaffold(
       appBar: AppBar(
         actions: [
@@ -33,7 +33,7 @@ class Wallpaper extends StatelessWidget {
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(32),
               image: const DecorationImage(
-                image: AssetImage('assets/images/wallpaper1.jpeg'),
+                image: AssetImage('assets/images/wallpaper2.jpeg'),
                 fit: BoxFit.cover,
               ),
               boxShadow: [

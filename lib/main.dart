@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:porfolio/app/modules/home/home_view.dart';
 import 'package:porfolio/app/modules/home/widgets/wallpaper.dart';
 import 'app/controllers/theme_controller.dart';
 // import 'app/theme/app_theme.dart';
