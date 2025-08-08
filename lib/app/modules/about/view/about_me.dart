@@ -57,23 +57,23 @@ class AboutScreen extends StatelessWidget {
                   padding: const EdgeInsets.all(20),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: const [
-                      SizedBox(height: 40),
-                      Text(
-                        "👋 Hi, I'm [Your Name]",
+                    children: [
+                      Image.asset('assets/animations/memoji.gif', height: 100),
+                      const Text(
+                        "👋 Hi, I'm Tanmay Nayak",
                         style: TextStyle(
                           fontSize: 22,
                           fontWeight: FontWeight.bold,
                         ),
                         textAlign: TextAlign.center,
                       ),
-                      SizedBox(height: 12),
-                      Text(
+                      const SizedBox(height: 12),
+                      const Text(
                         "A passionate Flutter developer building modern apps.",
                         textAlign: TextAlign.center,
                         style: TextStyle(color: Colors.black54, height: 1.5),
                       ),
-                      SizedBox(height: 40),
+                      const SizedBox(height: 40),
                     ],
                   ),
                 ),

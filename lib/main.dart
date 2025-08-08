@@ -16,12 +16,14 @@ class MyPortfolioApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GetMaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: "Tanmay's Portfolio",
-      theme: themeController.theme,
-      home: const Wallpaper(),
-      getPages: AppPages.routes,
+    return Obx(
+      () => GetMaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: "Tanmay's Portfolio",
+        theme: themeController.theme,
+        home: const Wallpaper(),
+        getPages: AppPages.routes,
+      ),
     );
   }
 }
