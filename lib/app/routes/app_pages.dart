@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
-import 'package:porfolio/app/modules/home/home_view.dart';
-
+import 'package:porfolio/app/modules/about/view/about_me.dart';
+import 'package:porfolio/app/modules/home/view/home_view.dart';
 part 'app_routes.dart';
 
 class AppPages {
@@ -8,10 +8,10 @@ class AppPages {
 
   static final routes = [
     GetPage(name: Routes.HOME, page: () => const HomeScreen()),
-    // GetPage(
-    //   name: Routes.ABOUT,
-    //   page: () => const AboutScreen(),
-    // ),
+    GetPage(
+      name: Routes.ABOUT,
+      page: () => const AboutScreen(onBack: HomeScreen.new),
+    ),
     // GetPage(
     //   name: Routes.TECH_STACK,
     //   page: () => const TechStackScreen(),

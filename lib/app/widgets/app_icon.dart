@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:porfolio/app/theme/styles.dart';
 
 class AppIcon extends StatelessWidget {
   final IconData? icon; // Optional icon
-  final String label;
+  final String label; // Text below the circle
   final VoidCallback onTap;
-  final String? imageAsset; // Optional image
+  final String? imageAsset; // Optional image inside the circle
+  final String? text; // Optional text inside the circle
 
   const AppIcon({
     super.key,
@@ -13,9 +13,10 @@ class AppIcon extends StatelessWidget {
     required this.label,
     required this.onTap,
     this.imageAsset,
+    this.text,
   }) : assert(
-         icon != null || imageAsset != null,
-         'Either icon or imageAsset must be provided',
+         icon != null || imageAsset != null || text != null,
+         'Either icon, imageAsset, or text must be provided',
        );
 
   @override
@@ -24,37 +25,49 @@ class AppIcon extends StatelessWidget {
 
     return GestureDetector(
       onTap: onTap,
-      child: Column(
-        children: [
-          Container(
-            decoration: AppStyles.glassEffect(theme.colorScheme.primary),
-            padding: const EdgeInsets.all(12),
-            child: CircleAvatar(
-              radius: 30,
-              backgroundColor: theme.colorScheme.primary.withOpacity(0.9),
-              child:
-                  imageAsset != null
-                      ? ClipOval(
-                        child: Image.asset(
-                          imageAsset!,
-                          fit: BoxFit.cover,
-                          height: 40,
-                          width: 40,
+      child: FittedBox(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              padding: const EdgeInsets.all(12),
+              child: CircleAvatar(
+                radius: 70,
+                backgroundColor: theme.iconTheme.color,
+                child:
+                    imageAsset != null
+                        ? ClipOval(
+                          child: Image.asset(
+                            imageAsset!,
+                            fit: BoxFit.cover,
+                            height: 150,
+                            width: 150,
+                          ),
+                        )
+                        : text != null
+                        ? Text(
+                          text!,
+                          style: theme.textTheme.titleLarge?.copyWith(
+                            fontSize: 80,
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          textAlign: TextAlign.center,
+                        )
+                        : Icon(
+                          icon,
+                          size: 80,
+                          color: theme.scaffoldBackgroundColor,
                         ),
-                      )
-                      : Icon(icon, size: 30, color: Colors.white),
+              ),
             ),
-          ),
-          const SizedBox(height: 8),
-          Text(
-            label,
-            style: theme.textTheme.bodySmall?.copyWith(
-              color: theme.colorScheme.onBackground,
-              fontWeight: FontWeight.w500,
-              fontSize: 12,
+            const SizedBox(height: 8),
+            Text(
+              label,
+              style: theme.textTheme.bodyLarge?.copyWith(fontSize: 35),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

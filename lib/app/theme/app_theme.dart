@@ -15,11 +15,11 @@ class AppTheme {
       cardColor: Colors.white,
       iconTheme: const IconThemeData(color: Colors.black87),
       textTheme: const TextTheme(
-        bodyLarge: TextStyle(color: Colors.black87, fontSize: 16),
+        bodyLarge: TextStyle(color: Colors.white, fontSize: 16),
         titleLarge: TextStyle(
           fontSize: 20,
           fontWeight: FontWeight.bold,
-          color: Colors.black,
+          color: Colors.white,
         ),
       ),
       appBarTheme: const AppBarTheme(

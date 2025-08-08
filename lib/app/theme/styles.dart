@@ -26,22 +26,4 @@ class AppStyles {
       ],
     );
   }
-
-  static BoxDecoration glassEffect(Color borderColor) {
-    return BoxDecoration(
-      gradient: LinearGradient(
-        colors: [
-          Colors.white.withOpacity(0.05),
-          Colors.white.withOpacity(0.02),
-        ],
-        begin: Alignment.topLeft,
-        end: Alignment.bottomRight,
-      ),
-      borderRadius: BorderRadius.circular(borderRadius),
-      border: Border.all(
-        color: borderColor.withOpacity(0.2),
-        width: 1.2,
-      ),
-    );
-  }
 }

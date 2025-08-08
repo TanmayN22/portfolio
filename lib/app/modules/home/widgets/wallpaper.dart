@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:porfolio/app/controllers/theme_controller.dart';
-import 'package:porfolio/app/modules/home/home_view.dart';
+import 'package:porfolio/app/modules/home/view/home_view.dart';
 
 class Wallpaper extends StatelessWidget {
   const Wallpaper({super.key});
@@ -33,7 +33,7 @@ class Wallpaper extends StatelessWidget {
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(32),
               image: const DecorationImage(
-                image: AssetImage('assets/images/wallpaper2.jpeg'),
+                image: AssetImage('assets/images/wallpaper1.jpeg'),
                 fit: BoxFit.cover,
               ),
               boxShadow: [
