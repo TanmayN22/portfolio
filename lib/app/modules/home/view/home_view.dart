@@ -1,76 +1,62 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:porfolio/app/modules/about/view/about_me.dart';
 import 'package:porfolio/app/modules/home/controllers/home_controller.dart';
 import 'package:porfolio/app/modules/home/controllers/image_controller.dart';
-import 'package:porfolio/app/modules/home/widgets/image_box.dart';
-import 'package:porfolio/app/widgets/app_icon.dart';
+import 'package:porfolio/app/modules/home/view/home_page_one.dart';
+import 'package:porfolio/app/modules/home/view/home_page_two.dart';
+import 'package:porfolio/app/modules/home/widgets/page_indicator.dart';
 import 'package:porfolio/app/widgets/nav_bar.dart';
 import 'package:porfolio/app/widgets/status_bar.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  final PageController _pageController = PageController();
+  int _currentPage = 0;
 
   @override
   Widget build(BuildContext context) {
     final controller = Get.put(HomeController());
-    final ImageController imageController = Get.put(ImageController());
+    Get.put(ImageController());
 
     return Obx(() {
-      // If an app is opened
       if (controller.openedApp.value != null) {
         return SizedBox.expand(child: controller.openedApp.value!);
       }
 
-      // Otherwise, show home screen
       return Column(
         children: [
           StatusBar(),
           const SizedBox(height: 16),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(height: 150, width: 130, child: ImageBox()),
-                const SizedBox(width: 16),
-                Expanded(
-                  child: GridView.count(
-                    crossAxisCount: 2,
-                    shrinkWrap: true,
-                    physics: NeverScrollableScrollPhysics(),
-                    crossAxisSpacing: 12,
-                    mainAxisSpacing: 12,
-                    children: [
-                      AppIcon(
-                        label: 'About me',
-                        imageAsset: 'assets/images/aboutme.jpg',
-                        onTap:
-                            () => controller.openApp(
-                              AboutScreen(onBack: controller.closeApp),
-                            ),
-                      ),
-                      AppIcon(
-                        label: 'Tech Stack',
-                        text: '🛠️',
-                        onTap: () {
-                          // You can open another widget here
-                        },
-                      ),
-                      AppIcon(
-                        label: 'Settings',
-                        icon: Icons.settings_sharp,
-                        onTap: () {
-                          // Another widget here
-                        },
-                      ),
-                    ],
-                  ),
-                ),
-              ],
+
+          Expanded(
+            child: PageView(
+              controller: _pageController,
+              onPageChanged: (index) => setState(() => _currentPage = index),
+              children: const [HomePageOne(), HomePageTwo()],
             ),
           ),
-          Spacer(),
+
+          const SizedBox(height: 12),
+
+          PageIndicator(
+            currentPage: _currentPage,
+            pageCount: 2,
+            onPageSelected: (index) {
+              _pageController.animateToPage(
+                index,
+                duration: const Duration(milliseconds: 300),
+                curve: Curves.easeInOut,
+              );
+            },
+          ),
+
+          const SizedBox(height: 16),
           NavBar(),
         ],
       );

@@ -7,7 +7,7 @@ class AppPages {
   static const initial = Routes.HOME;
 
   static final routes = [
-    GetPage(name: Routes.HOME, page: () => const HomeScreen()),
+    GetPage(name: Routes.HOME, page: () => HomeScreen()),
     GetPage(
       name: Routes.ABOUT,
       page: () => const AboutScreen(onBack: HomeScreen.new),
