@@ -1,25 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:porfolio/app/controllers/home_controller.dart';
-import 'package:porfolio/app/modules/about/widgets/body.dart';
 import 'package:porfolio/app/widgets/app_page_wrapper.dart';
 import 'package:porfolio/app/widgets/custom_appbar.dart';
 
-class AboutScreen extends StatelessWidget {
-  const AboutScreen({super.key});
+class ResumeScreen extends StatelessWidget {
+  const ResumeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return AppPageWrapper(
       child: Column(
         children: [
-          // Top bar
           CustomAppBar(
             onBack: () => Get.find<HomeController>().closeApp(),
-            appName: 'About Me',
+            appName: 'My Resume',
           ),
-          // Content
-          Body(),
+          Expanded(
+            child: SingleChildScrollView(
+              child: Image.asset('assets/resume/resume_preview.png'),
+            ),
+          ),
         ],
       ),
     );

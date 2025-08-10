@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:porfolio/app/modules/home/controllers/home_controller.dart';
+import 'package:porfolio/app/controllers/home_controller.dart';
 import 'package:porfolio/app/modules/home/controllers/image_controller.dart';
 import 'package:porfolio/app/modules/home/view/home_page_one.dart';
 import 'package:porfolio/app/modules/home/view/home_page_two.dart';

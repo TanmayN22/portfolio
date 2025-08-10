@@ -71,6 +71,8 @@ flutter:
     - assets/images/tanmay_code.jpg 
     - assets/images/aboutme.jpg
     - assets/animations/memoji.gif
+    - assets/resume/resume_preview.png
+    - assets/resume/Tanmay_Resume.pdf
     
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg

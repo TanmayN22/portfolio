@@ -2,8 +2,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:porfolio/app/modules/about/view/about_me.dart';
-import 'package:porfolio/app/modules/home/controllers/home_controller.dart';
+import 'package:porfolio/app/controllers/home_controller.dart';
 import 'package:porfolio/app/modules/home/widgets/image_box.dart';
+import 'package:porfolio/app/modules/resume/view/resume_screen.dart';
 import 'package:porfolio/app/widgets/app_icon.dart';
 
 class HomePageOne extends StatelessWidget {
@@ -31,25 +32,15 @@ class HomePageOne extends StatelessWidget {
                 AppIcon(
                   label: 'About me',
                   imageAsset: 'assets/images/aboutme.jpg',
-                  onTap: () => controller.openApp(
-                    AboutScreen(onBack: controller.closeApp),
-                  ),
+                  onTap: () => controller.openApp(AboutScreen()),
                 ),
+                AppIcon(label: 'Tech Stack', text: '🛠️', onTap: () {}),
                 AppIcon(
-                  label: 'Tech Stack',
-                  text: '🛠️',
-                  onTap: () {},
+                  label: 'Resume',
+                  icon: Icons.insert_drive_file,
+                  onTap: () => controller.openApp(ResumeScreen()),
                 ),
-                AppIcon(
-                  label: 'Settings',
-                  icon: Icons.settings_sharp,
-                  onTap: () {},
-                ),
-                AppIcon(
-                  label: 'Projects',
-                  icon: Icons.work,
-                  onTap: () {},
-                ),
+                AppIcon(label: 'Projects', icon: Icons.work, onTap: () {}),
               ],
             ),
           ),
