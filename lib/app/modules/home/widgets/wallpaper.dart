@@ -11,20 +11,6 @@ class Wallpaper extends StatelessWidget {
     final ThemeController themeController = Get.find();
 
     return Scaffold(
-      appBar: AppBar(
-        actions: [
-          IconButton(
-            onPressed: themeController.toggleTheme,
-            icon: Obx(
-              () => Icon(
-                themeController.isDarkMode.value
-                    ? Icons.wb_sunny
-                    : Icons.nightlight_round,
-              ),
-            ),
-          ),
-        ],
-      ),
       body: Center(
         child: Center(
           child: Container(

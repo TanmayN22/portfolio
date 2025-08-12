@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import '../theme/app_theme.dart';
 
 class ThemeController extends GetxController {
-  var isDarkMode = false.obs;
+  var isDarkMode = true.obs;
 
   ThemeData get theme =>
       isDarkMode.value ? AppTheme.darkTheme : AppTheme.lightTheme;

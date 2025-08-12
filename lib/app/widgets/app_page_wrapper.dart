@@ -21,7 +21,8 @@ class AppPageWrapper extends StatelessWidget {
         decoration: BoxDecoration(
           color: backgroundColor,
           borderRadius: BorderRadius.circular(borderRadius),
-          boxShadow: boxShadow ??
+          boxShadow:
+              boxShadow ??
               [
                 const BoxShadow(
                   color: Colors.black,

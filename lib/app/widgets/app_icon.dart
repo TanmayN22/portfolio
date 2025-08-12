@@ -22,6 +22,10 @@ class AppIcon extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+
+    final circleBgColor = isDark ? Colors.black : Colors.white;
+    final iconColor = isDark ? Colors.white : Colors.black;
 
     return GestureDetector(
       onTap: onTap,
@@ -33,7 +37,7 @@ class AppIcon extends StatelessWidget {
               padding: const EdgeInsets.all(12),
               child: CircleAvatar(
                 radius: 70,
-                backgroundColor: theme.iconTheme.color,
+                backgroundColor: circleBgColor,
                 child:
                     imageAsset != null
                         ? ClipOval(
@@ -49,16 +53,12 @@ class AppIcon extends StatelessWidget {
                           text!,
                           style: theme.textTheme.titleLarge?.copyWith(
                             fontSize: 80,
-                            color: Colors.white,
+                            color: iconColor,
                             fontWeight: FontWeight.bold,
                           ),
                           textAlign: TextAlign.center,
                         )
-                        : Icon(
-                          icon,
-                          size: 80,
-                          color: theme.scaffoldBackgroundColor,
-                        ),
+                        : Icon(icon, size: 80, color: iconColor),
               ),
             ),
             const SizedBox(height: 8),
