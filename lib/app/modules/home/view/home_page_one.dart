@@ -7,6 +7,7 @@ import 'package:porfolio/app/modules/home/widgets/github_widget.dart';
 import 'package:porfolio/app/modules/home/widgets/image_box.dart';
 import 'package:porfolio/app/modules/resume/view/resume_screen.dart';
 import 'package:porfolio/app/modules/settings/view/settings_screen.dart';
+import 'package:porfolio/app/modules/tech_stack/view/skills_screen.dart';
 import 'package:porfolio/app/widgets/app_icon.dart';
 import 'package:porfolio/data/services/secrets.dart';
 
@@ -39,16 +40,20 @@ class HomePageOne extends StatelessWidget {
                       imageAsset: 'assets/images/aboutme.jpg',
                       onTap: () => controller.openApp(AboutScreen()),
                     ),
-                    AppIcon(label: 'Tech Stack', text: '🛠️', onTap: () {}),
+                    AppIcon(
+                      label: 'Tech Stack',
+                      icon: Icons.handyman_outlined,
+                      onTap: () => controller.openApp(SkillsGlobeScreen()),
+                    ),
                     AppIcon(
                       label: 'Resume',
                       icon: Icons.insert_drive_file,
                       onTap: () => controller.openApp(ResumeScreen()),
                     ),
                     AppIcon(
-                      label: 'AI',
-                      icon: Icons.smart_toy_outlined,
-                      onTap: () {},
+                      label: 'My Assitant',
+                      icon: Icons.blur_on,
+                      onTap: () => controller.openApp,
                     ),
                   ],
                 ),
@@ -81,13 +86,13 @@ class HomePageOne extends StatelessWidget {
                       onTap: () {},
                     ),
                     AppIcon(
-                      label: 'My Assitant',
-                      icon: Icons.blur_on,
-                      onTap: () => controller.openApp(ResumeScreen()),
+                      label: 'Mini Game',
+                      icon: Icons.videogame_asset_outlined,
+                      onTap: () {},
                     ),
                     AppIcon(
-                      label: 'Mini Game',
-                      icon: Icons.gamepad,
+                      label: 'Thoughts',
+                      icon: Icons.messenger,
                       onTap: () {},
                     ),
                   ],
