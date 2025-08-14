@@ -108,16 +108,6 @@ class _BodyState extends State<Body> with SingleTickerProviderStateMixin {
 
                     SizedBox(height: isLargeScreen ? 32 : 20),
 
-                    // Skills section - Completely redesigned
-                    _buildSkillsSection(
-                      primaryText,
-                      secondaryText,
-                      accentColor,
-                      isLargeScreen,
-                    ),
-
-                    SizedBox(height: isLargeScreen ? 32 : 20),
-
                     // Quote section
                     _buildQuoteSection(
                       primaryText,
@@ -356,7 +346,7 @@ class _BodyState extends State<Body> with SingleTickerProviderStateMixin {
           SizedBox(height: isLargeScreen ? 12 : 8),
 
           Text(
-            "Beyond development, I find balance in strategic chess games and evening runs. I believe in continuous learning and creating meaningful digital experiences.",
+            "Beyond development, I maintain a disciplined lifestyle focused on endurance and growth. You'll find me playing chess, hitting the gym for strength training, or on daily runs. I also share insights and content on Instagram, connecting with my type of community.",
             style: GoogleFonts.inter(
               fontSize: isLargeScreen ? 13 : 11,
               fontWeight: FontWeight.w400,
@@ -368,198 +358,114 @@ class _BodyState extends State<Body> with SingleTickerProviderStateMixin {
       ),
     );
   }
+}
 
-  Widget _buildSkillsSection(
-    Color primaryText,
-    Color secondaryText,
-    Color accentColor,
-    bool isLargeScreen,
-  ) {
-    // Simplified skills list
-    final skills = [
-      "FLUTTER",
-      "DART",
-      "FIREBASE",
-      "SQLITE",
-      "REST APIs",
-      "GIT",
-    ];
-
-    return Column(
+Widget _buildQuoteSection(
+  Color primaryText,
+  Color secondaryText,
+  Color accentColor,
+  bool isLargeScreen,
+) {
+  return Container(
+    padding: EdgeInsets.all(isLargeScreen ? 24 : 14),
+    decoration: BoxDecoration(
+      border: Border(left: BorderSide(color: accentColor, width: 3)),
+    ),
+    child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Row(
-          children: [
-            Container(width: 3, height: 16, color: accentColor),
-            const SizedBox(width: 6),
-            Text(
-              "EXPERTISE",
-              style: GoogleFonts.inter(
-                fontSize: isLargeScreen ? 10 : 9,
-                fontWeight: FontWeight.w700,
-                color: primaryText,
-                letterSpacing: 1.4,
-              ),
-            ),
-          ],
-        ),
-
-        SizedBox(height: isLargeScreen ? 16 : 12),
-
-        // Simple text list instead of boxes to prevent overflow
-        ...skills
-            .map(
-              (skill) => Padding(
-                padding: const EdgeInsets.only(bottom: 6),
-                child: Row(
-                  children: [
-                    Container(width: 8, height: 1, color: accentColor),
-                    const SizedBox(width: 8),
-                    Text(
-                      skill,
-                      style: GoogleFonts.inter(
-                        fontSize: isLargeScreen ? 10 : 9,
-                        fontWeight: FontWeight.w600,
-                        color: primaryText,
-                        letterSpacing: 0.5,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            )
-            .toList(),
-      ],
-    );
-  }
-
-  Widget _buildQuoteSection(
-    Color primaryText,
-    Color secondaryText,
-    Color accentColor,
-    bool isLargeScreen,
-  ) {
-    return Container(
-      padding: EdgeInsets.all(isLargeScreen ? 24 : 14),
-      decoration: BoxDecoration(
-        border: Border(left: BorderSide(color: accentColor, width: 3)),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            '"Good design is as little design as possible."',
-            style: GoogleFonts.inter(
-              fontSize: isLargeScreen ? 16 : 12,
-              fontWeight: FontWeight.w300,
-              color: primaryText,
-              height: 1.3,
-              fontStyle: FontStyle.italic,
-            ),
+        Text(
+          '"On a journey to be consistent and disciplined in life so i have no regrets"',
+          style: GoogleFonts.inter(
+            fontSize: isLargeScreen ? 16 : 12,
+            fontWeight: FontWeight.w300,
+            color: primaryText,
+            height: 1.3,
+            fontStyle: FontStyle.italic,
           ),
-
-          SizedBox(height: isLargeScreen ? 12 : 8),
-
-          Text(
-            "— DIETER RAMS",
-            style: GoogleFonts.inter(
-              fontSize: isLargeScreen ? 8 : 7,
-              fontWeight: FontWeight.w600,
-              color: secondaryText,
-              letterSpacing: 1,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildContactSection(
-    Color primaryText,
-    Color secondaryText,
-    Color accentColor,
-    bool isLargeScreen,
-  ) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Row(
-          children: [
-            Container(width: 3, height: 16, color: accentColor),
-            const SizedBox(width: 6),
-            Text(
-              "CONNECT",
-              style: GoogleFonts.inter(
-                fontSize: isLargeScreen ? 10 : 9,
-                fontWeight: FontWeight.w700,
-                color: primaryText,
-                letterSpacing: 1.4,
-              ),
-            ),
-          ],
-        ),
-
-        SizedBox(height: isLargeScreen ? 16 : 12),
-
-        // Simplified buttons
-        _buildButton(
-          "SEND MESSAGE",
-          accentColor,
-          Colors.white,
-          true,
-          isLargeScreen,
-        ),
-        SizedBox(height: isLargeScreen ? 10 : 8),
-        _buildButton(
-          "DOWNLOAD CV",
-          Colors.transparent,
-          primaryText,
-          false,
-          isLargeScreen,
         ),
       ],
-    );
-  }
+    ),
+  );
+}
 
-  Widget _buildButton(
-    String text,
-    Color bgColor,
-    Color textColor,
-    bool filled,
-    bool isLargeScreen,
-  ) {
-    return Container(
-      width: double.infinity,
-      padding: EdgeInsets.symmetric(
-        vertical: isLargeScreen ? 12 : 10,
-        horizontal: isLargeScreen ? 16 : 12,
-      ),
-      decoration: BoxDecoration(
-        color: filled ? bgColor : Colors.transparent,
-        border: Border.all(
-          color: filled ? bgColor : textColor.withOpacity(0.3),
-          width: 1,
-        ),
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+Widget _buildContactSection(
+  Color primaryText,
+  Color secondaryText,
+  Color accentColor,
+  bool isLargeScreen,
+) {
+  return Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      Row(
         children: [
+          Container(width: 3, height: 16, color: accentColor),
+          const SizedBox(width: 6),
           Text(
-            text,
+            "CONNECT",
             style: GoogleFonts.inter(
               fontSize: isLargeScreen ? 10 : 9,
               fontWeight: FontWeight.w700,
-              color: textColor,
-              letterSpacing: 0.6,
+              color: primaryText,
+              letterSpacing: 1.4,
             ),
-          ),
-          Icon(
-            filled ? Icons.arrow_forward : Icons.file_download_outlined,
-            size: isLargeScreen ? 14 : 12,
-            color: textColor,
           ),
         ],
       ),
-    );
-  }
+
+      SizedBox(height: isLargeScreen ? 16 : 12),
+
+      // Simplified buttons
+      _buildButton(
+        "SEND MESSAGE",
+        accentColor,
+        Colors.white,
+        true,
+        isLargeScreen,
+      ),
+    ],
+  );
+}
+
+Widget _buildButton(
+  String text,
+  Color bgColor,
+  Color textColor,
+  bool filled,
+  bool isLargeScreen,
+) {
+  return Container(
+    width: double.infinity,
+    padding: EdgeInsets.symmetric(
+      vertical: isLargeScreen ? 12 : 10,
+      horizontal: isLargeScreen ? 16 : 12,
+    ),
+    decoration: BoxDecoration(
+      color: filled ? bgColor : Colors.transparent,
+      border: Border.all(
+        color: filled ? bgColor : textColor.withOpacity(0.3),
+        width: 1,
+      ),
+    ),
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(
+          text,
+          style: GoogleFonts.inter(
+            fontSize: isLargeScreen ? 10 : 9,
+            fontWeight: FontWeight.w700,
+            color: textColor,
+            letterSpacing: 0.6,
+          ),
+        ),
+        Icon(
+          filled ? Icons.arrow_forward : Icons.file_download_outlined,
+          size: isLargeScreen ? 14 : 12,
+          color: textColor,
+        ),
+      ],
+    ),
+  );
 }
