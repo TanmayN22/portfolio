@@ -74,12 +74,12 @@ flutter:
     - assets/images/tanmay_1.jpeg
     - assets/images/tanmay_code.jpg 
     - assets/images/aboutme.jpg
-    - assets/animations/memoji.gif
     - assets/resume/resume_preview.png
     - assets/resume/Tanmay_Resume.pdf
     - assets/images/map.png
     - assets/icons/light/
     - assets/icons/dark/
+    - assets/images/wave3.png
     
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
