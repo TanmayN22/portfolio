@@ -47,7 +47,10 @@ class ResumeScreen extends StatelessWidget {
                 ),
                 child: Padding(
                   padding: const EdgeInsets.only(left: 3, right: 1, top: 1),
-                  child: Text('View Full Resume'),
+                  child: Text(
+                    'View Full Resume',
+                    style: TextStyle(color: Colors.black),
+                  ),
                 ),
               ),
               onTap: () {

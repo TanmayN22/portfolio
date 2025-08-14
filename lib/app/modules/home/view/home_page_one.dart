@@ -91,8 +91,8 @@ class HomePageOne extends StatelessWidget {
                       onTap: () {},
                     ),
                     AppIcon(
-                      label: 'Thoughts',
-                      icon: Icons.messenger,
+                      label: 'Motiv',
+                      icon: Icons.format_quote_sharp,
                       onTap: () {},
                     ),
                   ],

@@ -8,32 +8,50 @@ import 'package:porfolio/app/widgets/custom_appbar.dart';
 class Settings extends StatelessWidget {
   Settings({super.key});
 
-  final ThemeController themeController = Get.put(ThemeController());
+  final ThemeController themeController = Get.find<ThemeController>();
 
   @override
   Widget build(BuildContext context) {
-    final iconColor = Theme.of(context).iconTheme.color;
-
     return AppPageWrapper(
+      backgroundColor: Theme.of(context).primaryColor,
       child: Column(
         children: [
           CustomAppBar(
-            onBack: () => Get.find<HomeController>().closeApp(),
+            onBack:
+                () =>
+                    Get.find<HomeController>()
+                        .closeApp(), // Standard navigation
             appName: 'Settings',
           ),
-          IconButton(
-            onPressed: themeController.toggleTheme,
-            icon: Obx(() {
-              final isDark = themeController.isDarkMode.value;
-              return Icon(
-                isDark ? Icons.wb_sunny : Icons.nightlight_round,
-                color:
-                    isDark
-                        ? Colors.black
-                        : Colors
-                            .black, // Sun icon always black, moon icon black as well
-              );
-            }),
+          Expanded(
+            child: ListView(
+              children: [
+                ListTile(
+                  leading: Icon(
+                    Icons.brightness_6,
+                    color: Theme.of(context).iconTheme.color,
+                  ),
+                  title: Text(
+                    'Dark Mode',
+                    style: TextStyle(
+                      color: Theme.of(context).textTheme.bodySmall?.color,
+                    ),
+                  ),
+                  trailing: Obx(
+                    () => Switch(
+                      value: themeController.isDarkMode.value,
+                      onChanged: (value) => themeController.toggleTheme(),
+                      activeColor:
+                          Colors
+                              .black, // Color of the thumb when the switch is on
+                      activeTrackColor:
+                          Colors
+                              .white, // Color of the track when the switch is on
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
         ],
       ),
