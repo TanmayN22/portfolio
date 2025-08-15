@@ -12,7 +12,7 @@ import 'package:porfolio/app/modules/resume/view/resume_screen.dart';
 import 'package:porfolio/app/modules/settings/view/settings_screen.dart';
 import 'package:porfolio/app/modules/tech_stack/view/skills_screen.dart';
 import 'package:porfolio/app/widgets/app_icon.dart';
-import 'package:porfolio/data/services/secrets.dart';
+import 'package:porfolio/app/data/services/secrets.dart';
 
 class HomePageOne extends StatelessWidget {
   const HomePageOne({super.key});
