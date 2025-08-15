@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:porfolio/app/modules/about/view/about_me.dart';
 import 'package:porfolio/app/controllers/home_controller.dart';
+import 'package:porfolio/app/modules/analytics/view/analytics_view.dart';
+import 'package:porfolio/app/modules/assistant/view/assistant_view.dart';
+import 'package:porfolio/app/modules/game/view/mini_game.dart';
 import 'package:porfolio/app/modules/home/widgets/github_widget.dart';
 import 'package:porfolio/app/modules/home/widgets/image_box.dart';
 import 'package:porfolio/app/modules/motiv/controller/motiv_controller.dart';
@@ -54,7 +57,10 @@ class HomePageOne extends StatelessWidget {
                     AppIcon(
                       label: 'My Assistant',
                       icon: Icons.blur_on,
-                      onTap: () {}, // Fixed syntax
+                      onTap:
+                          () => controller.openApp(
+                            AssistantView(),
+                          ), // Fixed syntax
                     ),
                   ],
                 ),
@@ -81,12 +87,12 @@ class HomePageOne extends StatelessWidget {
                     AppIcon(
                       label: 'My Analytics',
                       icon: Icons.bar_chart_rounded,
-                      onTap: () {},
+                      onTap: () => controller.openApp(AnalyticsView()),
                     ),
                     AppIcon(
                       label: 'Mini Game',
                       icon: Icons.videogame_asset_outlined,
-                      onTap: () {},
+                      onTap: () => controller.openApp(MiniGame()),
                     ),
                     AppIcon(
                       label: 'Motiv',

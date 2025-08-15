@@ -46,11 +46,11 @@ class AppTheme {
         color: Color.fromARGB(255, 123, 123, 123),
       ), // Ensures icons are visible
       textTheme: const TextTheme(
-        bodyLarge: TextStyle(color: Colors.white, fontSize: 16),
+        bodyLarge: TextStyle(color: Colors.black, fontSize: 16),
         titleLarge: TextStyle(
           fontSize: 20,
           fontWeight: FontWeight.bold,
-          color: Colors.white,
+          color: Colors.black,
         ),
       ),
       appBarTheme: const AppBarTheme(
