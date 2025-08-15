@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:porfolio/app/controllers/home_controller.dart';
+import 'package:porfolio/app/modules/home/widgets/music_widget.dart';
 // import 'package:porfolio/app/modules/mail/view/mail_view.dart';
 import 'package:porfolio/app/widgets/app_icon.dart';
 import 'package:icons_plus/icons_plus.dart';
@@ -57,6 +58,8 @@ class HomePageTwo extends StatelessWidget {
             ],
           ),
         ),
+        SizedBox(height: 16),
+        MusicWidget(),
       ],
     );
   }

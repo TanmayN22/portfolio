@@ -45,6 +45,7 @@ dependencies:
   flutter_svg: ^2.2.0
   icons_plus: ^5.0.0
   flutter_email_sender: ^7.0.0
+  just_audio: ^0.10.4
 
 dev_dependencies:
   flutter_test:
@@ -83,6 +84,9 @@ flutter:
     - assets/icons/light/
     - assets/icons/dark/
     - assets/images/wave3.png
+    - assets/images/blue.jpeg
+    - assets/audio/
+    
     
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
