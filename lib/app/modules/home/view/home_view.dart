@@ -5,6 +5,8 @@ import 'package:porfolio/app/modules/home/controllers/image_controller.dart';
 import 'package:porfolio/app/modules/home/view/home_page_one.dart';
 import 'package:porfolio/app/modules/home/view/home_page_two.dart';
 import 'package:porfolio/app/modules/home/widgets/page_indicator.dart';
+import 'package:porfolio/app/modules/motiv/controller/motiv_controller.dart';
+import 'package:porfolio/app/modules/motiv/widget/motiv_noti.dart';
 import 'package:porfolio/app/widgets/nav_bar.dart';
 import 'package:porfolio/app/widgets/status_bar.dart';
 
@@ -22,6 +24,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     final controller = Get.put(HomeController());
+    final motivController = Get.put(MotivController()); // Add motiv controller
     Get.put(ImageController());
 
     return Obx(() {
@@ -29,35 +32,52 @@ class _HomeScreenState extends State<HomeScreen> {
         return SizedBox.expand(child: controller.openedApp.value!);
       }
 
-      return Column(
+      return Stack(
         children: [
-          StatusBar(),
-          const SizedBox(height: 16),
-
-          Expanded(
-            child: PageView(
-              controller: _pageController,
-              onPageChanged: (index) => setState(() => _currentPage = index),
-              children: const [HomePageOne(), HomePageTwo()],
-            ),
+          Column(
+            children: [
+              StatusBar(),
+              const SizedBox(height: 16),
+              Expanded(
+                child: PageView(
+                  controller: _pageController,
+                  onPageChanged:
+                      (index) => setState(() => _currentPage = index),
+                  children: const [HomePageOne(), HomePageTwo()],
+                ),
+              ),
+              const SizedBox(height: 12),
+              PageIndicator(
+                currentPage: _currentPage,
+                pageCount: 2,
+                onPageSelected: (index) {
+                  _pageController.animateToPage(
+                    index,
+                    duration: const Duration(milliseconds: 300),
+                    curve: Curves.easeInOut,
+                  );
+                },
+              ),
+              const SizedBox(height: 16),
+              NavBar(),
+            ],
           ),
 
-          const SizedBox(height: 12),
-
-          PageIndicator(
-            currentPage: _currentPage,
-            pageCount: 2,
-            onPageSelected: (index) {
-              _pageController.animateToPage(
-                index,
-                duration: const Duration(milliseconds: 300),
-                curve: Curves.easeInOut,
+          // Notification overlay - controlled by MotivController
+          Obx(() {
+            if (motivController.currentNotification.value != null) {
+              return Positioned(
+                top: 10,
+                left: 0,
+                right: 0,
+                child: NotificationOverlay(
+                  message: motivController.currentNotification.value!,
+                  onDismiss: motivController.dismissNotification,
+                ),
               );
-            },
-          ),
-
-          const SizedBox(height: 16),
-          NavBar(),
+            }
+            return const SizedBox.shrink();
+          }),
         ],
       );
     });

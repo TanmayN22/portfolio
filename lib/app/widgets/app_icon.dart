@@ -62,10 +62,7 @@ class AppIcon extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 8),
-            Text(
-              label,
-              style: theme.textTheme.bodyLarge?.copyWith(fontSize: 35),
-            ),
+            Text(label, style: TextStyle(fontSize: 35, color: Colors.white)),
           ],
         ),
       ),

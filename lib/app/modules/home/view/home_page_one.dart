@@ -1,10 +1,10 @@
-// home_page_one.dart
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:porfolio/app/modules/about/view/about_me.dart';
 import 'package:porfolio/app/controllers/home_controller.dart';
 import 'package:porfolio/app/modules/home/widgets/github_widget.dart';
 import 'package:porfolio/app/modules/home/widgets/image_box.dart';
+import 'package:porfolio/app/modules/motiv/controller/motiv_controller.dart';
 import 'package:porfolio/app/modules/resume/view/resume_screen.dart';
 import 'package:porfolio/app/modules/settings/view/settings_screen.dart';
 import 'package:porfolio/app/modules/tech_stack/view/skills_screen.dart';
@@ -17,6 +17,7 @@ class HomePageOne extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = Get.find<HomeController>();
+    final motivController = Get.find<MotivController>(); // Get motiv controller
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -51,17 +52,16 @@ class HomePageOne extends StatelessWidget {
                       onTap: () => controller.openApp(ResumeScreen()),
                     ),
                     AppIcon(
-                      label: 'My Assitant',
+                      label: 'My Assistant',
                       icon: Icons.blur_on,
-                      onTap: () => controller.openApp,
+                      onTap: () {}, // Fixed syntax
                     ),
                   ],
                 ),
               ),
             ],
           ),
-          SizedBox(height: 25),
-
+          const SizedBox(height: 25),
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -76,9 +76,7 @@ class HomePageOne extends StatelessWidget {
                     AppIcon(
                       label: 'Settings',
                       icon: Icons.settings,
-                      onTap: () {
-                        controller.openApp(Settings());
-                      },
+                      onTap: () => controller.openApp(Settings()),
                     ),
                     AppIcon(
                       label: 'My Analytics',
@@ -93,12 +91,13 @@ class HomePageOne extends StatelessWidget {
                     AppIcon(
                       label: 'Motiv',
                       icon: Icons.format_quote_sharp,
-                      onTap: () {},
+                      onTap:
+                          () => motivController.showRandomQuote(), // Clean call
                     ),
                   ],
                 ),
               ),
-              SizedBox(width: 16),
+              const SizedBox(width: 16),
               SizedBox(
                 height: 150,
                 width: 130,
@@ -106,7 +105,7 @@ class HomePageOne extends StatelessWidget {
               ),
             ],
           ),
-          SizedBox(height: 25),
+          const SizedBox(height: 25),
           GitHubContributionsWidget(username: 'TanmayN22', token: githubToken),
         ],
       ),
