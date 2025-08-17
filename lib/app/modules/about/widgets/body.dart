@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class Body extends StatefulWidget {
   const Body({super.key});
@@ -11,6 +12,120 @@ class Body extends StatefulWidget {
 class _BodyState extends State<Body> with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _fadeAnimation;
+
+  Widget _buildContactSection(
+    Color primaryText,
+    Color secondaryText,
+    Color accentColor,
+    bool isLargeScreen,
+  ) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          children: [
+            Container(width: 3, height: 16, color: accentColor),
+            const SizedBox(width: 6),
+            Text(
+              "CONNECT",
+              style: GoogleFonts.inter(
+                fontSize: isLargeScreen ? 10 : 9,
+                fontWeight: FontWeight.w700,
+                color: primaryText,
+                letterSpacing: 1.4,
+              ),
+            ),
+          ],
+        ),
+
+        SizedBox(height: isLargeScreen ? 16 : 12),
+
+        // Updated button with email functionality
+        _buildButton(
+          "SEND MESSAGE",
+          accentColor,
+          Colors.white,
+          true,
+          isLargeScreen,
+          _launchEmail, // This should work now
+        ),
+      ],
+    );
+  }
+
+  Widget _buildButton(
+    String text,
+    Color bgColor,
+    Color textColor,
+    bool filled,
+    bool isLargeScreen,
+    VoidCallback? onTap, // Add this parameter
+  ) {
+    return GestureDetector(
+      onTap: onTap, // Add this
+      child: Container(
+        width: double.infinity,
+        padding: EdgeInsets.symmetric(
+          vertical: isLargeScreen ? 12 : 10,
+          horizontal: isLargeScreen ? 16 : 12,
+        ),
+        decoration: BoxDecoration(
+          color: filled ? bgColor : Colors.transparent,
+          border: Border.all(
+            color: filled ? bgColor : textColor.withOpacity(0.3),
+            width: 1,
+          ),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              text,
+              style: GoogleFonts.inter(
+                fontSize: isLargeScreen ? 10 : 9,
+                fontWeight: FontWeight.w700,
+                color: textColor,
+                letterSpacing: 0.6,
+              ),
+            ),
+            Icon(
+              filled ? Icons.arrow_forward : Icons.file_download_outlined,
+              size: isLargeScreen ? 14 : 12,
+              color: textColor,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Future<void> _launchEmail() async {
+    final Uri emailUri = Uri(
+      scheme: 'mailto',
+      path: 'nayaktanmayg@gmail.com',
+      queryParameters: {
+        'subject': 'Contact from Portfolio App',
+        'body':
+            'Hello Tanmay,\n\nI would like to get in touch with you.\n\nBest regards,',
+      },
+    );
+
+    try {
+      if (await canLaunchUrl(emailUri)) {
+        await launchUrl(emailUri);
+      } else {
+        throw 'Could not launch email client';
+      }
+    } catch (e) {
+      // Handle error - maybe show a snackbar
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Could not open email client'),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
+  }
 
   @override
   void initState() {
@@ -383,87 +498,6 @@ Widget _buildQuoteSection(
             height: 1.3,
             fontStyle: FontStyle.italic,
           ),
-        ),
-      ],
-    ),
-  );
-}
-
-Widget _buildContactSection(
-  Color primaryText,
-  Color secondaryText,
-  Color accentColor,
-  bool isLargeScreen,
-) {
-  return Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-      Row(
-        children: [
-          Container(width: 3, height: 16, color: accentColor),
-          const SizedBox(width: 6),
-          Text(
-            "CONNECT",
-            style: GoogleFonts.inter(
-              fontSize: isLargeScreen ? 10 : 9,
-              fontWeight: FontWeight.w700,
-              color: primaryText,
-              letterSpacing: 1.4,
-            ),
-          ),
-        ],
-      ),
-
-      SizedBox(height: isLargeScreen ? 16 : 12),
-
-      // Simplified buttons
-      _buildButton(
-        "SEND MESSAGE",
-        accentColor,
-        Colors.white,
-        true,
-        isLargeScreen,
-      ),
-    ],
-  );
-}
-
-Widget _buildButton(
-  String text,
-  Color bgColor,
-  Color textColor,
-  bool filled,
-  bool isLargeScreen,
-) {
-  return Container(
-    width: double.infinity,
-    padding: EdgeInsets.symmetric(
-      vertical: isLargeScreen ? 12 : 10,
-      horizontal: isLargeScreen ? 16 : 12,
-    ),
-    decoration: BoxDecoration(
-      color: filled ? bgColor : Colors.transparent,
-      border: Border.all(
-        color: filled ? bgColor : textColor.withOpacity(0.3),
-        width: 1,
-      ),
-    ),
-    child: Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Text(
-          text,
-          style: GoogleFonts.inter(
-            fontSize: isLargeScreen ? 10 : 9,
-            fontWeight: FontWeight.w700,
-            color: textColor,
-            letterSpacing: 0.6,
-          ),
-        ),
-        Icon(
-          filled ? Icons.arrow_forward : Icons.file_download_outlined,
-          size: isLargeScreen ? 14 : 12,
-          color: textColor,
         ),
       ],
     ),
