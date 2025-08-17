@@ -1,61 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:just_audio/just_audio.dart';
+import 'package:get/get.dart';
+import 'package:porfolio/app/controllers/music_controller.dart';
 
-class MusicWidget extends StatefulWidget {
+class MusicWidget extends StatelessWidget {
   const MusicWidget({super.key});
 
   @override
-  State<MusicWidget> createState() => _MusicWidgetState();
-}
-
-class _MusicWidgetState extends State<MusicWidget> {
-  late AudioPlayer player;
-  bool isPlaying = false;
-  bool isLoading = true;
-
-  @override
-  void initState() {
-    super.initState();
-    player = AudioPlayer();
-    _init();
-  }
-
-  Future<void> _init() async {
-    try {
-      await player.setAsset('assets/audio/blue.mp3');
-      player.playerStateStream.listen((state) {
-        if (mounted) {
-          setState(() {
-            isPlaying = state.playing;
-            isLoading = state.processingState == ProcessingState.loading;
-          });
-        }
-      });
-    } catch (e) {
-      debugPrint('error loading $e');
-    }
-  }
-
-  @override
-  void dispose() {
-    player.dispose();
-    super.dispose();
-  }
-
-  void _playPause() async {
-    try {
-      if (isPlaying) {
-        await player.pause();
-      } else {
-        await player.play();
-      }
-    } catch (e) {
-      print('Error playing');
-    }
-  }
-
-  @override
   Widget build(BuildContext context) {
+    final MusicController controller = Get.put(MusicController());
+    // container
     return Container(
       width: 300,
       height: 120,
@@ -72,6 +25,7 @@ class _MusicWidgetState extends State<MusicWidget> {
       ),
       child: Row(
         children: [
+          // the image of the song
           Padding(
             padding: const EdgeInsets.all(12.0),
             child: Container(
@@ -83,86 +37,124 @@ class _MusicWidgetState extends State<MusicWidget> {
                   color: Theme.of(context).colorScheme.outline.withOpacity(0.3),
                   width: 1,
                 ),
-                image: const DecorationImage(
-                  image: AssetImage("assets/images/blue.jpeg"),
-                  fit: BoxFit.cover,
+              ),
+              child: Obx(
+                () => ClipRRect(
+                  borderRadius: BorderRadius.circular(16),
+                  child: Image.asset(
+                    controller.currentSong.imagePath,
+                    fit: BoxFit.cover,
+                    errorBuilder:
+                        (context, error, stackTrace) => Container(
+                          color: Theme.of(
+                            context,
+                          ).colorScheme.outline.withOpacity(0.3),
+                          child: Icon(
+                            Icons.music_note,
+                            color: Theme.of(
+                              context,
+                            ).colorScheme.onSurface.withOpacity(0.5),
+                          ),
+                        ),
+                  ),
                 ),
               ),
             ),
           ),
+
+          // Add exactly 5 pixels of space here
+          const SizedBox(width: 5),
+
+          // Title, artist, and buttons section in a Column
           Expanded(
             child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 12),
+              padding: const EdgeInsets.symmetric(vertical: 8),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text(
-                    "Blue",
-                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      color: Theme.of(context).colorScheme.onSurface,
-                      fontWeight: FontWeight.w600,
+                  // Song title
+                  Obx(
+                    () => Text(
+                      controller.currentSong.title,
+                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                        color: Theme.of(context).colorScheme.onSurface,
+                        fontWeight: FontWeight.w600,
+                      ),
+                      overflow: TextOverflow.ellipsis,
                     ),
                   ),
                   const SizedBox(height: 4),
-                  Text(
-                    "Yung Kai",
-                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: Theme.of(
-                        context,
-                      ).colorScheme.onSurface.withOpacity(0.7),
+
+                  // Artist name
+                  Obx(
+                    () => Text(
+                      controller.currentSong.artist,
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                        color: Theme.of(
+                          context,
+                        ).colorScheme.onSurface.withOpacity(0.7),
+                      ),
+                      overflow: TextOverflow.ellipsis,
                     ),
+                  ),
+
+                  const SizedBox(height: 12), // Space between text and buttons
+                  // Control buttons
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      IconButton(
+                        onPressed: controller.skipPrevious,
+                        icon: Icon(
+                          Icons.skip_previous,
+                          color: Theme.of(
+                            context,
+                          ).colorScheme.onSurface.withOpacity(0.8),
+                        ),
+                        iconSize: 20,
+                      ),
+                      Container(
+                        width: 36,
+                        height: 36,
+                        margin: const EdgeInsets.symmetric(horizontal: 4),
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).colorScheme.primary,
+                          borderRadius: BorderRadius.circular(18),
+                        ),
+                        child: Obx(
+                          () => IconButton(
+                            onPressed:
+                                controller.isLoading.value
+                                    ? null
+                                    : controller.playPause,
+                            icon: Icon(
+                              controller.isLoading.value
+                                  ? Icons.hourglass_empty
+                                  : (controller.isPlaying.value
+                                      ? Icons.pause
+                                      : Icons.play_arrow),
+                              color: Theme.of(context).colorScheme.onPrimary,
+                            ),
+                            iconSize: 18,
+                            padding: EdgeInsets.zero,
+                          ),
+                        ),
+                      ),
+                      IconButton(
+                        onPressed: controller.skipNext,
+                        icon: Icon(
+                          Icons.skip_next,
+                          color: Theme.of(
+                            context,
+                          ).colorScheme.onSurface.withOpacity(0.8),
+                        ),
+                        iconSize: 20,
+                      ),
+                    ],
                   ),
                 ],
               ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(right: 8),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                IconButton(
-                  onPressed: () {},
-                  icon: Icon(
-                    Icons.skip_previous,
-                    color: Theme.of(
-                      context,
-                    ).colorScheme.onSurface.withOpacity(0.8),
-                  ),
-                  iconSize: 24,
-                ),
-                Container(
-                  width: 30,
-                  height: 30,
-                  margin: const EdgeInsets.symmetric(horizontal: 4),
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.primary,
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: IconButton(
-                    onPressed: isLoading ? null : _playPause,
-                    icon: Icon(
-                      isLoading
-                          ? Icons.hourglass_empty
-                          : (isPlaying ? Icons.pause : Icons.play_arrow),
-                      color: Theme.of(context).colorScheme.onPrimary,
-                    ),
-                    iconSize: 20,
-                    padding: EdgeInsets.zero,
-                  ),
-                ),
-                IconButton(
-                  onPressed: () {},
-                  icon: Icon(
-                    Icons.skip_next,
-                    color: Theme.of(
-                      context,
-                    ).colorScheme.onSurface.withOpacity(0.8),
-                  ),
-                  iconSize: 24,
-                ),
-              ],
             ),
           ),
         ],
