@@ -59,9 +59,14 @@ class MusicController extends GetxController {
       isPlaying.value = state.playing;
       isLoading.value = state.processingState == ProcessingState.loading;
 
-      if (state.processingState == ProcessingState.completed) {
+      // Only handle completion if we're actually at the end and playing was true
+      if (state.processingState == ProcessingState.completed &&
+          !isLoading.value) {
         print('🎵 Track completed, moving to next...');
-        _handleTrackCompletion();
+        // Use a delayed call to avoid race conditions
+        Future.delayed(const Duration(milliseconds: 100), () {
+          _handleTrackCompletion();
+        });
       }
     });
 
@@ -147,9 +152,42 @@ class MusicController extends GetxController {
   }
 
   Future<void> _handleTrackCompletion() async {
-    _currentIndex.value = (_currentIndex.value + 1) % _playlist.length;
-    await _loadCurrentTrack();
-    await _player.play();
+    print('🎵 Track completion handler called');
+
+    try {
+      // Prevent multiple simultaneous calls
+      if (isLoading.value) {
+        print('🎵 Already loading, skipping track completion');
+        return;
+      }
+
+      // Stop the current track completely and reset position
+      await _player.stop();
+      await _player.seek(Duration.zero);
+
+      // Move to next track
+      _currentIndex.value = (_currentIndex.value + 1) % _playlist.length;
+
+      print('🎵 Moving to track ${_currentIndex.value}: ${currentSong.title}');
+
+      // Add a small delay to ensure cleanup
+      await Future.delayed(const Duration(milliseconds: 200));
+
+      // Load the new track
+      await _loadCurrentTrack();
+
+      // Add another small delay before playing
+      await Future.delayed(const Duration(milliseconds: 100));
+
+      // Start playing the new track
+      await _player.play();
+
+      print('🎵 New track should be playing: ${currentSong.title}');
+    } catch (e) {
+      print('❌ Error in track completion: $e');
+      // Fallback - just load the track without auto-play
+      await _loadCurrentTrack();
+    }
   }
 
   Song _getDefaultSong() {
