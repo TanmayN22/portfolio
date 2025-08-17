@@ -87,7 +87,7 @@ class HomePageOne extends StatelessWidget {
                     AppIcon(
                       label: 'My Analytics',
                       icon: Icons.bar_chart_rounded,
-                      onTap: () => controller.openApp(AnalyticsView()),
+                      onTap: () => controller.openApp(AnalyticsPage()),
                     ),
                     AppIcon(
                       label: 'Mini Game',
