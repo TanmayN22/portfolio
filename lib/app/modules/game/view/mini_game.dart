@@ -1,9 +1,9 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:porfolio/app/controllers/home_controller.dart';
 import 'package:porfolio/app/widgets/app_page_wrapper.dart';
 import 'package:porfolio/app/widgets/custom_appbar.dart';
-import 'dart:async';
 import 'dart:math';
 
 class MiniGame extends StatefulWidget {
@@ -29,12 +29,76 @@ class _MiniGameState extends State<MiniGame> {
     foodPosition = foodRandomPosition();
   }
 
+  // food position
   int foodRandomPosition() {
     int newPosition;
     do {
       newPosition = random.nextInt(numberOfSquares);
     } while (snakePosition.contains(newPosition));
     return newPosition;
+  }
+
+  void generateFood() {
+    foodPosition = foodRandomPosition();
+  }
+
+  Timer? gameTimer;
+
+  // start game
+  void startGame() {
+    gameTimer?.cancel();
+    const duration = Duration(milliseconds: 300);
+    gameTimer = Timer.periodic(duration, (Timer timer) {
+      updateSnake();
+    });
+  }
+
+  // update snake position
+  var direction = 'down';
+  void updateSnake() {
+    setState(() {
+      switch (direction) {
+        case 'down':
+          if (snakePosition.last >= 380) {
+            snakePosition.add(snakePosition.last % 20);
+          } else {
+            snakePosition.add(snakePosition.last + 20);
+          }
+          break;
+
+        case 'up':
+          if (snakePosition.last < 20) {
+            snakePosition.add(snakePosition.last + 380);
+          } else {
+            snakePosition.add(snakePosition.last - 20);
+          }
+          break;
+
+        case 'left':
+          if (snakePosition.last % 20 == 0) {
+            snakePosition.add(snakePosition.last + 19);
+          } else {
+            snakePosition.add(snakePosition.last - 1);
+          }
+          break;
+
+        case 'right':
+          if (snakePosition.last % 20 == 19) {
+            snakePosition.add(snakePosition.last - 19);
+          } else {
+            snakePosition.add(snakePosition.last + 1);
+          }
+          break;
+
+        default:
+      }
+
+      if (snakePosition.last == foodPosition) {
+        generateFood();
+      } else {
+        snakePosition.removeAt(0);
+      }
+    });
   }
 
   @override
@@ -78,6 +142,7 @@ class _MiniGameState extends State<MiniGame> {
               },
             ),
           ),
+          TextButton(onPressed: () => startGame(), child: Text('Start')),
         ],
       ),
     );
