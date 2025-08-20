@@ -44,6 +44,12 @@ class _MiniGameState extends State<MiniGame> {
 
   Timer? gameTimer;
 
+  @override
+  void dispose() {
+    gameTimer?.cancel();
+    super.dispose();
+  }
+
   // start game
   void startGame() {
     gameTimer?.cancel();
