@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:porfolio/app/controllers/home_controller.dart';
 import 'package:porfolio/app/widgets/app_page_wrapper.dart';
@@ -18,6 +19,7 @@ class _MiniGameState extends State<MiniGame> {
   Random random = Random();
   late List<int> snakePosition;
   late int foodPosition;
+  FocusNode focusNode = FocusNode();
 
   @override
   void initState() {
@@ -27,6 +29,7 @@ class _MiniGameState extends State<MiniGame> {
     int startPos = startCol + startRow * 20;
     snakePosition = [startPos, startPos + 1];
     foodPosition = foodRandomPosition();
+    focusNode.requestFocus();
   }
 
   // food position
@@ -43,10 +46,11 @@ class _MiniGameState extends State<MiniGame> {
   }
 
   Timer? gameTimer;
-
+  // disposing every thing that starts
   @override
   void dispose() {
     gameTimer?.cancel();
+    focusNode.dispose();
     super.dispose();
   }
 
@@ -107,49 +111,90 @@ class _MiniGameState extends State<MiniGame> {
     });
   }
 
+  void handleKeyPress(KeyEvent event) {
+    if (event is KeyDownEvent) {
+      switch (event.logicalKey) {
+        case LogicalKeyboardKey.arrowUp:
+          if (direction != 'down') direction = 'up';
+          break;
+        case LogicalKeyboardKey.arrowDown:
+          if (direction != 'up') direction = 'down';
+          break;
+        case LogicalKeyboardKey.arrowRight:
+          if (direction != 'left') direction = 'right';
+          break;
+        case LogicalKeyboardKey.arrowLeft:
+          if (direction != 'right') direction = 'left';
+          break;
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final backgroundColor = isDark ? Colors.black : Colors.white;
-    final boxColor = Colors.grey;
-    return AppPageWrapper(
-      backgroundColor: backgroundColor,
-      child: Column(
-        children: [
-          CustomAppBar(
-            onBack: () => Get.find<HomeController>().closeApp(),
-            appName: 'Mini Game',
-            backgroundColor: Colors.black,
-          ),
-          SizedBox(height: 100),
-          Expanded(
-            child: GridView.builder(
-              physics: NeverScrollableScrollPhysics(),
-              itemCount: numberOfSquares,
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 20,
-              ),
-              itemBuilder: (BuildContext context, int index) {
-                Color squareColor;
-                if (snakePosition.contains(index)) {
-                  squareColor = Colors.red; // Snake color
-                } else if (index == foodPosition) {
-                  squareColor = Colors.white; // Food color
-                } else {
-                  squareColor = Colors.grey; // Empty square
-                }
-                return Container(
-                  padding: EdgeInsets.all(2),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(5),
-                    child: Container(color: squareColor),
-                  ),
-                );
-              },
+
+    return KeyboardListener(
+      focusNode: focusNode,
+      onKeyEvent: handleKeyPress,
+      child: AppPageWrapper(
+        backgroundColor: backgroundColor,
+        child: Column(
+          children: [
+            CustomAppBar(
+              onBack: () => Get.find<HomeController>().closeApp(),
+              appName: 'Mini Game',
+              backgroundColor: Colors.black,
             ),
-          ),
-          TextButton(onPressed: () => startGame(), child: Text('Start')),
-        ],
+            Expanded(
+              child: SingleChildScrollView(
+                // Make it scrollable
+                child: Column(
+                  mainAxisAlignment:
+                      MainAxisAlignment.start, // Changed from center
+                  children: [
+                    SizedBox(height: 20), // Top padding
+                    SizedBox(
+                      height: 350, // Reduce from 400 to 350
+                      width: 350, // Reduce from 400 to 350
+                      child: GridView.builder(
+                        physics: NeverScrollableScrollPhysics(),
+                        itemCount: numberOfSquares,
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 20,
+                        ),
+                        itemBuilder: (BuildContext context, int index) {
+                          Color squareColor;
+                          if (snakePosition.contains(index)) {
+                            squareColor = Colors.red;
+                          } else if (index == foodPosition) {
+                            squareColor = Colors.white;
+                          } else {
+                            squareColor = Colors.grey;
+                          }
+                          return Container(
+                            padding: EdgeInsets.all(2),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(5),
+                              child: Container(color: squareColor),
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                    SizedBox(height: 20),
+                    TextButton(
+                      onPressed: () => startGame(),
+                      child: Text('Start'),
+                    ),
+                    SizedBox(height: 20), // Bottom padding
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
