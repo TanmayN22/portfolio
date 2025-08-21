@@ -91,11 +91,6 @@ class MusicController extends GetxController {
       isLoading.value = false;
     } catch (e) {
       print('❌ Error loading track: $e');
-      Get.snackbar(
-        'Error',
-        'Failed to load track: ${currentSong.title}',
-        snackPosition: SnackPosition.BOTTOM,
-      );
       isLoading.value = false;
     }
   }
@@ -107,13 +102,7 @@ class MusicController extends GetxController {
       } else {
         await _player.play();
       }
-    } catch (e) {
-      Get.snackbar(
-        'Playback Error',
-        'Failed to play/pause audio',
-        snackPosition: SnackPosition.BOTTOM,
-      );
-    }
+    } catch (e) {}
   }
 
   Future<void> skipNext() async {
