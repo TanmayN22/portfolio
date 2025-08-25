@@ -12,7 +12,6 @@ import 'package:porfolio/app/modules/resume/view/resume_screen.dart';
 import 'package:porfolio/app/modules/settings/view/settings_screen.dart';
 import 'package:porfolio/app/modules/tech_stack/view/skills_screen.dart';
 import 'package:porfolio/app/widgets/app_icon.dart';
-import 'package:porfolio/app/data/services/secrets.dart';
 
 class HomePageOne extends StatelessWidget {
   const HomePageOne({super.key});
@@ -112,7 +111,7 @@ class HomePageOne extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 25),
-          GitHubContributionsWidget(username: 'TanmayN22', token: githubToken),
+          GitHubContributionsWidget(username: 'TanmayN22'),
         ],
       ),
     );

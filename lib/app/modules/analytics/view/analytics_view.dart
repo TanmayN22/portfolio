@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:get/get.dart';
 import 'package:porfolio/app/controllers/home_controller.dart';
-import 'package:porfolio/app/data/services/secrets.dart';
-import 'package:porfolio/app/modules/analytics/service/github_service.dart';
-import 'package:porfolio/app/modules/analytics/service/leetcode_service.dart';
+// import 'package:porfolio/app/modules/analytics/service/github_service.dart';
+// import 'package:porfolio/app/modules/analytics/service/leetcode_service.dart';
+import 'package:porfolio/app/modules/analytics/service/api_cache_repository.dart'; // ADDED
 import 'package:porfolio/app/widgets/app_page_wrapper.dart';
 import 'package:porfolio/app/widgets/custom_appbar.dart';
 import 'package:icons_plus/icons_plus.dart';
@@ -43,26 +43,31 @@ class _AnalyticsPageState extends State<AnalyticsPage>
     super.dispose();
   }
 
+  // UPDATED fetchData() method with caching
   Future<void> fetchData() async {
     try {
-      final githubService = GitHubService(
-        username: "TanmayN22",
-        token: githubToken,
-      );
-      final leetcodeService = LeetCodeService(username: "TanmayN22");
+      setState(() => loading = true);
 
-      final gh = await githubService.fetchStats();
-      final lc = await leetcodeService.fetchStats();
+      // Use cached repository instead of direct API calls
+      final results = await Future.wait([
+        ApiCacheRepository.getGitHubStats("TanmayN22"),
+        ApiCacheRepository.getLeetCodeStats("TanmayN22"),
+      ]);
 
       setState(() {
-        githubData = gh;
-        leetcodeData = lc;
+        githubData = results[0];
+        leetcodeData = results[1];
         loading = false;
       });
+
       _animationController.forward();
     } catch (e) {
-      debugPrint("Error fetching stats: $e");
-      setState(() => loading = false);
+      debugPrint("Cache Error: $e");
+      setState(() {
+        githubData = null;
+        leetcodeData = null;
+        loading = false;
+      });
       _animationController.forward();
     }
   }
@@ -115,35 +120,111 @@ class _AnalyticsPageState extends State<AnalyticsPage>
             child: FadeTransition(
               opacity: _fadeAnimation,
               child: Container(
-                color:
-                    isDark ? const Color(0xFF0d1117) : const Color(0xFFf6f8fa),
-                child: SingleChildScrollView(
-                  padding: const EdgeInsets.all(16),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      // GitHub Section
-                      if (githubData != null) ...[
+                color: isDark ? const Color(0xFF0d1117) : const Color(0xFFf6f8fa),
+                // UPDATED: Added RefreshIndicator
+                child: RefreshIndicator(
+                  onRefresh: () async {
+                    await ApiCacheRepository.refreshAllData("TanmayN22");
+                    await fetchData();
+                  },
+                  child: SingleChildScrollView(
+                    padding: const EdgeInsets.all(16),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        // GitHub Section
                         _buildSectionHeader('GitHub', isDark),
                         const SizedBox(height: 12),
-                        _buildGitHubStats(isDark),
-                        const SizedBox(height: 16),
-                        _buildContributionChart(isDark),
+                        githubData != null
+                            ? Column(
+                                children: [
+                                  _buildGitHubStats(isDark),
+                                  const SizedBox(height: 16),
+                                  _buildContributionChart(isDark),
+                                ],
+                              )
+                            : _buildErrorCard('GitHub', isDark),
                         const SizedBox(height: 24),
-                      ],
-
-                      // LeetCode Section
-                      if (leetcodeData != null) ...[
+                        
+                        // LeetCode Section
                         _buildSectionHeader('LeetCode', isDark),
                         const SizedBox(height: 12),
-                        _buildLeetCodeStats(isDark),
-                        const SizedBox(height: 16),
-                        _buildProblemDistribution(isDark),
+                        leetcodeData != null
+                            ? Column(
+                                children: [
+                                  _buildLeetCodeStats(isDark),
+                                  const SizedBox(height: 16),
+                                  _buildProblemDistribution(isDark),
+                                ],
+                              )
+                            : _buildErrorCard('LeetCode', isDark),
                       ],
-                    ],
+                    ),
                   ),
                 ),
               ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  // UPDATED _buildErrorCard with cache refresh
+  Widget _buildErrorCard(String service, bool isDark) {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: isDark ? const Color(0xFF161B22) : Colors.white,
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(
+          color: isDark ? const Color(0xFF30363D) : const Color(0xFFD1D9E0),
+        ),
+      ),
+      child: Column(
+        children: [
+          Icon(Icons.cloud_off_outlined, color: Colors.orange, size: 32),
+          SizedBox(height: 12),
+          Text(
+            '$service Temporarily Unavailable',
+            style: TextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.w600,
+              color: isDark ? Colors.white : Colors.black87,
+            ),
+            textAlign: TextAlign.center,
+          ),
+          SizedBox(height: 8),
+          Text(
+            'Using cached data or check your connection',
+            style: TextStyle(
+              fontSize: 12,
+              color: isDark ? Colors.white60 : Colors.black54,
+            ),
+            textAlign: TextAlign.center,
+          ),
+          SizedBox(height: 12),
+          ElevatedButton.icon(
+            onPressed: () async {
+              setState(() => loading = true);
+              try {
+                if (service == 'GitHub') {
+                  await ApiCacheRepository.refreshGitHubData("TanmayN22");
+                } else {
+                  await ApiCacheRepository.refreshLeetCodeData("TanmayN22");
+                }
+                await fetchData();
+              } catch (e) {
+                debugPrint("Refresh Error: $e");
+                setState(() => loading = false);
+              }
+            },
+            icon: Icon(Icons.refresh, size: 16),
+            label: Text('Retry'),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.orange,
+              foregroundColor: Colors.white,
+              padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             ),
           ),
         ],
@@ -160,22 +241,19 @@ class _AnalyticsPageState extends State<AnalyticsPage>
             width: 20,
             height: 20,
             margin: const EdgeInsets.only(right: 12),
-            child:
-                title == 'GitHub'
-                    ? Icon(
-                      Bootstrap.github, // GitHub icon from Bootstrap pack
-                      color:
-                          isDark
-                              ? const Color(0xFF7c3aed)
-                              : const Color(0xFF6366f1),
-                      size: 20,
-                    )
-                    : Icon(
-                      FontAwesome
-                          .code_solid, // Code icon for LeetCode from FontAwesome
-                      color: const Color(0xFFf59e0b),
-                      size: 18,
-                    ),
+            child: title == 'GitHub'
+                ? Icon(
+                    Bootstrap.github,
+                    color: isDark
+                        ? const Color(0xFF7c3aed)
+                        : const Color(0xFF6366f1),
+                    size: 20,
+                  )
+                : Icon(
+                    FontAwesome.code_solid,
+                    color: const Color(0xFFf59e0b),
+                    size: 18,
+                  ),
           ),
           Text(
             title,
@@ -209,8 +287,7 @@ class _AnalyticsPageState extends State<AnalyticsPage>
     }
 
     // Calculate comprehensive stats
-    final totalStarsEarned =
-        githubData!['repositories']?['nodes']?.fold<int>(
+    final totalStarsEarned = githubData!['repositories']?['nodes']?.fold<int>(
           0,
           (int sum, dynamic repo) =>
               sum + ((repo['stargazerCount'] as int?) ?? 0),
@@ -229,8 +306,7 @@ class _AnalyticsPageState extends State<AnalyticsPage>
     final totalContributions =
         totalCommits + totalPRs + totalIssues + totalReviews;
     final contributedToRepos =
-        contributionsCollection?['totalRepositoriesWithContributedCommits'] ??
-        0;
+        contributionsCollection?['totalRepositoriesWithContributedCommits'] ?? 0;
 
     // Calculate streaks
     final longestStreak = _calculateLongestStreak();
@@ -247,7 +323,7 @@ class _AnalyticsPageState extends State<AnalyticsPage>
           currentStreak,
         ),
         const SizedBox(height: 16),
-
+        
         // Detailed stats
         ...[
           ['Total Commits', totalCommits.toString()],
@@ -265,14 +341,8 @@ class _AnalyticsPageState extends State<AnalyticsPage>
         ].asMap().entries.map((entry) {
           int index = entry.key;
           List<String> stat = entry.value;
-
           if (stat.length >= 2) {
-            return _buildStatRow(
-              stat[0],
-              stat[1],
-              isDark,
-              isLast: index == 10, // 11 items total, so last index is 10
-            );
+            return _buildStatRow(stat[0], stat[1], isDark, isLast: index == 5);
           } else {
             return Container();
           }
@@ -396,8 +466,7 @@ class _AnalyticsPageState extends State<AnalyticsPage>
 
   // Helper methods for streak calculation
   int _calculateLongestStreak() {
-    if (githubData?['contributionsCollection']?['contributionCalendar'] !=
-        null) {
+    if (githubData?['contributionsCollection']?['contributionCalendar'] != null) {
       return _analyzeContributionStreak(
         githubData!['contributionsCollection']['contributionCalendar'],
         longest: true,
@@ -407,8 +476,7 @@ class _AnalyticsPageState extends State<AnalyticsPage>
   }
 
   int _calculateCurrentStreak() {
-    if (githubData?['contributionsCollection']?['contributionCalendar'] !=
-        null) {
+    if (githubData?['contributionsCollection']?['contributionCalendar'] != null) {
       return _analyzeContributionStreak(
         githubData!['contributionsCollection']['contributionCalendar'],
         longest: false,
@@ -422,14 +490,14 @@ class _AnalyticsPageState extends State<AnalyticsPage>
     required bool longest,
   }) {
     try {
-      final weeks = calendar['weeks'] as List<dynamic>?;
+      final weeks = calendar['weeks'] as List?;
       if (weeks == null) return 0;
 
       List<int> dailyContributions = [];
 
       // Flatten all days from all weeks
       for (var week in weeks) {
-        final days = week['contributionDays'] as List<dynamic>?;
+        final days = week['contributionDays'] as List?;
         if (days != null) {
           for (var day in days) {
             final contributionCount = day['contributionCount'] as int? ?? 0;
@@ -442,7 +510,7 @@ class _AnalyticsPageState extends State<AnalyticsPage>
         // Calculate longest streak
         int maxStreak = 0;
         int currentStreak = 0;
-
+        
         for (int contribution in dailyContributions) {
           if (contribution > 0) {
             currentStreak++;
@@ -498,22 +566,20 @@ class _AnalyticsPageState extends State<AnalyticsPage>
     ];
 
     return Column(
-      children:
-          stats.asMap().entries.map((entry) {
-            int index = entry.key;
-            List<String> stat = entry.value;
-
-            if (stat.length >= 2) {
-              return _buildStatRow(
-                stat[0],
-                stat[1],
-                isDark,
-                isLast: index == stats.length - 1,
-              );
-            } else {
-              return Container();
-            }
-          }).toList(),
+      children: stats.asMap().entries.map((entry) {
+        int index = entry.key;
+        List<String> stat = entry.value;
+        if (stat.length >= 2) {
+          return _buildStatRow(
+            stat[0],
+            stat[1],
+            isDark,
+            isLast: index == stats.length - 1,
+          );
+        } else {
+          return Container();
+        }
+      }).toList(),
     );
   }
 
@@ -530,13 +596,12 @@ class _AnalyticsPageState extends State<AnalyticsPage>
         border: Border.all(
           color: isDark ? const Color(0xFF30363D) : const Color(0xFFD1D9E0),
         ),
-        borderRadius:
-            isLast
-                ? const BorderRadius.only(
-                  bottomLeft: Radius.circular(8),
-                  bottomRight: Radius.circular(8),
-                )
-                : null,
+        borderRadius: isLast
+            ? const BorderRadius.only(
+                bottomLeft: Radius.circular(8),
+                bottomRight: Radius.circular(8),
+              )
+            : null,
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -564,8 +629,7 @@ class _AnalyticsPageState extends State<AnalyticsPage>
   Widget _buildContributionChart(bool isDark) {
     if (githubData == null ||
         githubData!['contributionsCollection'] == null ||
-        githubData!['contributionsCollection']['totalCommitContributions'] ==
-            null) {
+        githubData!['contributionsCollection']['totalCommitContributions'] == null) {
       return Container(
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
@@ -582,9 +646,7 @@ class _AnalyticsPageState extends State<AnalyticsPage>
       );
     }
 
-    final commits =
-        githubData!['contributionsCollection']['totalCommitContributions']
-            as int;
+    final commits = githubData!['contributionsCollection']['totalCommitContributions'] as int;
     final weeklyData = List.generate(
       7,
       (index) => (commits / 7).round() + (index % 3),
@@ -616,8 +678,7 @@ class _AnalyticsPageState extends State<AnalyticsPage>
             child: BarChart(
               BarChartData(
                 alignment: BarChartAlignment.spaceEvenly,
-                maxY:
-                    (weeklyData.reduce((a, b) => a > b ? a : b) + 2).toDouble(),
+                maxY: (weeklyData.reduce((a, b) => a > b ? a : b) + 2).toDouble(),
                 barGroups: List.generate(7, (index) {
                   return BarChartGroupData(
                     x: index,

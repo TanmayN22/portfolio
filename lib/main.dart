@@ -5,6 +5,7 @@ import 'package:porfolio/app/routes/app_pages.dart';
 import 'app/controllers/theme_controller.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(MyPortfolioApp());
 }
 
