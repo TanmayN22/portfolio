@@ -91,6 +91,9 @@ flutter:
     - assets/images/spider.jpg
     - assets/images/golden_brown.jpeg
     - assets/audio/
+    - assets/icons/homestock.png
+    - assets/icons/tiled.png
+    - assets/icons/quizzler.png
     
     
   #   - images/a_dot_burr.jpeg

@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:porfolio/app/controllers/home_controller.dart';
 import 'package:porfolio/app/modules/home/widgets/music_widget.dart';
+import 'package:porfolio/app/modules/projects/homestock/view/homestock_view.dart';
+import 'package:porfolio/app/modules/projects/quizzler/view/quizzler_view.dart';
+import 'package:porfolio/app/modules/projects/tiled/view/tiled_view.dart';
 // import 'package:porfolio/app/modules/mail/view/mail_view.dart';
 import 'package:porfolio/app/widgets/app_icon.dart';
 import 'package:icons_plus/icons_plus.dart';
@@ -60,6 +63,34 @@ class HomePageTwo extends StatelessWidget {
         ),
         SizedBox(height: 16),
         MusicWidget(),
+        SizedBox(height: 16),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: GridView.count(
+            crossAxisCount: 4,
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            crossAxisSpacing: 12,
+            mainAxisSpacing: 12,
+            children: [
+              AppIcon(
+                label: 'HomeStock',
+                imageAsset: 'assets/icons/homestock.png',
+                onTap: () => controller.openApp(HomestockView()),
+              ),
+              AppIcon(
+                label: 'Quizzler',
+                imageAsset: 'assets/icons/quizzler.png',
+                onTap: () => controller.openApp(QuizzlerView()),
+              ),
+              AppIcon(
+                label: 'Tiled',
+                imageAsset: 'assets/icons/tiled.png',
+                onTap: () => controller.openApp(TiledView()),
+              ),
+            ],
+          ),
+        ),
       ],
     );
   }
