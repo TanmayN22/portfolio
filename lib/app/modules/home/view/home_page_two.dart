@@ -106,7 +106,7 @@ Smart Search Functionality: Robust search features that help users quickly locat
 
 Responsive UI Design: Card-based interface and responsive layouts that adapt seamlessly across different screen sizes
 ''',
-    status: ProjectStatus.updating,
+    status: ProjectStatus.inProgress,
     techStack: {
       'Flutter': 'assets/icons/light/flutter.svg',
       'Dart': 'assets/icons/light/dart.svg',
