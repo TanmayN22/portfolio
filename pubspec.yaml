@@ -104,6 +104,13 @@ flutter:
     - assets/images/q_4.png
     - assets/images/q_5.png
     - assets/images/q_6.png
+    - assets/images/t_1.png
+    - assets/images/t_2.png
+    - assets/images/t_3.png
+    - assets/images/t_4.png
+    - assets/images/t_5.png
+    - assets/images/t_6.png
+    - assets/icons/getx.svg
     
     
   #   - images/a_dot_burr.jpeg

@@ -41,7 +41,7 @@ Why you'll love HomeStock:
       'Flutter': 'assets/icons/light/flutter.svg',
       'Sqlite': 'assets/icons/light/sqlite.svg',
       'Dart': 'assets/icons/light/dart.svg',
-      'Getx': 'assets/icons/light/getx.svg',
+      'Getx': 'assets/icons/getx.svg',
     },
   );
 
@@ -78,8 +78,40 @@ Download Quizzler today!''',
       'Flutter': 'assets/icons/light/flutter.svg',
       'Firebase': 'assets/icons/light/firebase.svg',
       'Dart': 'assets/icons/light/dart.svg',
-      'GetX': 'assets/icons/light/getx.svg',
+      'GetX': 'assets/icons/getx.svg',
       'Sqlite': 'assets/icons/light/sqlite.svg',
+    },
+  );
+
+  final tiledProject = Project(
+    name: 'Tiled',
+    iconPath: 'assets/icons/tiled.png',
+    githuburl: 'https://github.com/TanmayN22/Tiled',
+    accentColor: const Color.fromARGB(255, 82, 80, 80),
+    imagePaths: [
+      'assets/images/t_1.png',
+      'assets/images/t_2.png',
+      'assets/images/t_3.png',
+      'assets/images/t_4.png',
+      'assets/images/t_5.png',
+      'assets/images/t_6.png',
+    ],
+    description:
+        '''Tiled is a modern gallery app that reimagines how users interact with their photo collections. Built using Flutter and Dart, this project demonstrates proficiency in mobile application development with a focus on intuitive navigation, powerful search capabilities, and intelligent file organization.
+
+Key Features:
+Advanced Navigation System: Fluid, gesture-based navigation that makes browsing through large photo collections effortless
+
+Smart Search Functionality: Robust search features that help users quickly locate specific images or albums
+
+Responsive UI Design: Card-based interface and responsive layouts that adapt seamlessly across different screen sizes
+''',
+    status: ProjectStatus.updating,
+    techStack: {
+      'Flutter': 'assets/icons/light/flutter.svg',
+      'Dart': 'assets/icons/light/dart.svg',
+      'GetX': 'assets/icons/getx.svg',
+      'Hive': 'assets/icons/light/flutter.svg',
     },
   );
 
@@ -156,6 +188,14 @@ Download Quizzler today!''',
                 onTap:
                     () => controller.openApp(
                       ProjectDetailsView(project: quizzlerProject),
+                    ),
+              ),
+              AppIcon(
+                label: 'Tiled',
+                imageAsset: 'assets/icons/tiled.png',
+                onTap:
+                    () => controller.openApp(
+                      ProjectDetailsView(project: tiledProject),
                     ),
               ),
             ],
