@@ -94,6 +94,16 @@ flutter:
     - assets/icons/homestock.png
     - assets/icons/tiled.png
     - assets/icons/quizzler.png
+    - assets/images/hs_1.png
+    - assets/images/hs_2.png
+    - assets/images/hs_3.png
+    - assets/images/hs_4.png
+    - assets/images/q_1.png
+    - assets/images/q_2.png
+    - assets/images/q_3.png
+    - assets/images/q_4.png
+    - assets/images/q_5.png
+    - assets/images/q_6.png
     
     
   #   - images/a_dot_burr.jpeg

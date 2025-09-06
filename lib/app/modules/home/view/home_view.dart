@@ -49,7 +49,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     _currentPage = newPage;
                   });
                 },
-                children: const [HomePageOne(), HomePageTwo()],
+                children: [const HomePageOne(), HomePageTwo()],
               ),
             ),
             const SizedBox(height: 12),
