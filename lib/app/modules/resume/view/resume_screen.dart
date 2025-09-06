@@ -8,8 +8,9 @@ import 'package:universal_html/html.dart' as html;
 class ResumeScreen extends StatelessWidget {
   const ResumeScreen({super.key});
 
+  // Corrected the filename to be case-sensitive
   void openResume() {
-    html.window.open('assets/resume/Tanmay_resume.pdf', '_blank');
+    html.window.open('assets/resume/Tanmay_Resume.pdf', '_blank');
   }
 
   @override
@@ -21,41 +22,35 @@ class ResumeScreen extends StatelessWidget {
             onBack: () => Get.find<HomeController>().closeApp(),
             appName: 'My Resume',
           ),
-          SizedBox(height: 10),
+          const SizedBox(height: 10),
+          // Removed the incorrect 'Expanded' widget from here
           Center(
-            child: Expanded(
-              child: SingleChildScrollView(
-                child: Image.asset(
-                  'assets/resume/resume_preview.png',
-                  height: 500,
-                ),
+            child: SingleChildScrollView(
+              child: Image.asset(
+                'assets/resume/resume_preview.png',
+                height: 500,
               ),
             ),
           ),
-          Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
-              color: Colors.white,
-            ),
-            child: GestureDetector(
-              child: Container(
-                width: 125,
-                height: 25,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(16),
-                  border: Border.all(color: Colors.black, width: 1),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 3, right: 1, top: 1),
-                  child: Text(
-                    'View Full Resume',
-                    style: TextStyle(color: Colors.black),
+          const SizedBox(height: 10), // Added for better spacing
+          GestureDetector(
+            onTap: openResume,
+            child: Container(
+              width: 150, // Increased width for better text fit
+              height: 35,  // Increased height for better text fit
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                border: Border.all(color: Colors.black, width: 1.5),
+              ),
+              child: const Center(
+                child: Text(
+                  'View Full Resume',
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold, // Made text bold
                   ),
                 ),
               ),
-              onTap: () {
-                openResume();
-              },
             ),
           ),
         ],
