@@ -8,9 +8,9 @@ import 'package:universal_html/html.dart' as html;
 class ResumeScreen extends StatelessWidget {
   const ResumeScreen({super.key});
 
-  // Corrected the filename to be case-sensitive
+  // Replaced the local asset path with your public Google Drive URL
   void openResume() {
-    html.window.open('assets/resume/Tanmay_Resume.pdf', '_blank');
+    html.window.open('https://drive.google.com/file/d/1yR1okYe8lb7Z7HDj3FApldP3gOmvzLgZ/view?usp=drive_link', '_blank');
   }
 
   @override
@@ -23,7 +23,7 @@ class ResumeScreen extends StatelessWidget {
             appName: 'My Resume',
           ),
           const SizedBox(height: 10),
-          // Removed the incorrect 'Expanded' widget from here
+          // Removed the incorrect 'Expanded' widget
           Center(
             child: SingleChildScrollView(
               child: Image.asset(
@@ -32,12 +32,12 @@ class ResumeScreen extends StatelessWidget {
               ),
             ),
           ),
-          const SizedBox(height: 10), // Added for better spacing
+          const SizedBox(height: 10),
           GestureDetector(
             onTap: openResume,
             child: Container(
-              width: 150, // Increased width for better text fit
-              height: 35,  // Increased height for better text fit
+              width: 150,
+              height: 35,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
                 border: Border.all(color: Colors.black, width: 1.5),
@@ -47,7 +47,7 @@ class ResumeScreen extends StatelessWidget {
                   'View Full Resume',
                   style: TextStyle(
                     color: Colors.black,
-                    fontWeight: FontWeight.bold, // Made text bold
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
               ),
